@@ -1,0 +1,20 @@
+[
+	{
+		"Nome": "Anónio Alberto",
+		"_id": "4352",
+		"Notas": [14,12,17,11,13],
+		"Curso": "História"
+	},
+	{
+		"Nome": "Bernardo Silva",
+		"_id": "975",
+		"Notas": [15,19,16,20,12],
+		"Curso": "Desporto"
+	},
+	{
+		"Nome": "Pedro Soares",
+		"_id": "8402",
+		"Notas": [12,13,11,17,10],
+		"Curso": "Ciência Política"
+	}
+]

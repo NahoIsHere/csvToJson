@@ -1,0 +1,8 @@
+Numero,Nome,Curso,Disciplinas{1,5},,,,,,Presenças{3}::media,,,,Aprovado
+70936,Carolina Costa,Bioquímica,Biomoléculas,Biologia Molecular,Física II,Enzimologia,,25,12,9,Verdade
+93287,Andreia Martins,Contabilidade,Introdução à Gestão,Contabilidade Financeira III,,,,32,1,7,Mentira
+85030,Francisco Gonçalves,Engenharia Mecânica,Mecânica Geral,Estatística Aplicada,,,,24,31,12,Mentira
+91701,Dulce Andrade,Estudos Culturais,Literatura de Viagens,Cultura Alemã,Estética,Cultura Inglesa,,64,21,13,Verdade
+59274,Cristiano Lopes,Filosofia,Ética,,,,,5,0,0,Mentira
+90832,Igor Nunes,Música,Ciências Musicais,Interpretação Musical,,,,45,76,12,Verdade
+68027,Sandro Rodrigues,Relações Internacionais,Economia Política,História das Ideias Políticas e Sociais,,,,34,12,32,Verdade

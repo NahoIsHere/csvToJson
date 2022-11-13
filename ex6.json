@@ -1,0 +1,58 @@
+[
+	{
+		"Numero": "70936",
+		"Nome": "Carolina Costa",
+		"Curso": "Bioquímica",
+		"Disciplinas": ["Biomoléculas","Biologia Molecular","Física II","Enzimologia"],
+		"Presenças_media": "15.333333333333334",
+		"Aprovado": "Verdade"
+	},
+	{
+		"Numero": "93287",
+		"Nome": "Andreia Martins",
+		"Curso": "Contabilidade",
+		"Disciplinas": ["Introdução à Gestão","Contabilidade Financeira III"],
+		"Presenças_media": "13.333333333333334",
+		"Aprovado": "Mentira"
+	},
+	{
+		"Numero": "85030",
+		"Nome": "Francisco Gonçalves",
+		"Curso": "Engenharia Mecânica",
+		"Disciplinas": ["Mecânica Geral","Estatística Aplicada"],
+		"Presenças_media": "22.333333333333332",
+		"Aprovado": "Mentira"
+	},
+	{
+		"Numero": "91701",
+		"Nome": "Dulce Andrade",
+		"Curso": "Estudos Culturais",
+		"Disciplinas": ["Literatura de Viagens","Cultura Alemã","Estética","Cultura Inglesa"],
+		"Presenças_media": "32.666666666666664",
+		"Aprovado": "Verdade"
+	},
+	{
+		"Numero": "59274",
+		"Nome": "Cristiano Lopes",
+		"Curso": "Filosofia",
+		"Disciplinas": ["Ética"],
+		"Presenças_media": "1.6666666666666667",
+		"Aprovado": "Mentira"
+	},
+	{
+		"Numero": "90832",
+		"Nome": "Igor Nunes",
+		"Curso": "Música",
+		"Disciplinas": ["Ciências Musicais","Interpretação Musical"],
+		"Presenças_media": "44.333333333333336",
+		"Aprovado": "Verdade"
+	},
+	{
+		"Numero": "68027",
+		"Nome": "Sandro Rodrigues",
+		"Curso": "Relações Internacionais",
+		"Disciplinas": ["Economia Política","História das Ideias Políticas e Sociais"],
+		"Presenças_media": "26.0",
+		"Aprovado": "Verdade"
+	}
+]

@@ -1,0 +1,20 @@
+[
+	{
+		"nome": "Tomás Almeida",
+		"modalidade": "Andebol",
+		"clubes": ["famalicão","porto","sporting","boavista"],
+		"somavitórias": "2"
+	},
+	{
+		"nome": "Manuel Pinto",
+		"modalidade": "Basquetebol",
+		"clubes": ["braga","porto","vitória","chaves","benfica","maximinense","dumiense"],
+		"somavitórias": "3"
+	},
+	{
+		"nome": "Orlando Vieira",
+		"modalidade": "futebol",
+		"clubes": ["dumiense","chaves","porto"],
+		"somavitórias": "1"
+	}
+]

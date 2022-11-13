@@ -16,10 +16,10 @@ funcSearch = re.compile(r'[A-Za-z]+\{([0-9]+),?([0-9]+)?\}:*([A-Za-z]+)?')
 # ER para remover o nome da função em compreensão
 funcArgSplit = re.compile(r'\{')
 #ER para verificar se o valor é uma string ou um inteiro
-listaStringSearch = re.compile(r'[A-Za-z]')
+listaStringSearch = re.compile(r'[A-Za-z\-]')
 
 
-def openCSV(ficheiro):
+def abrirCSV(ficheiro):
     '''
     Lê um ficheiro CSV e guarda os seus dados num buffer
     :param ficheiro: Nome do ficheiro
@@ -32,7 +32,7 @@ def openCSV(ficheiro):
     return dados
 
 
-def csvDataToDict(dados):
+def dadosCSVparaDic(dados):
     '''
     Converte o cabeçalho do ficheiro numa lista de argumentos
     Transforma cada linha num dicionário, onde a chave é o argumento e o valor a informação da coluna
@@ -86,7 +86,7 @@ def csvDataToDict(dados):
                     # Preparar o argumento para ser adicionado ao dicionario Arg_func
                     novoarg = str(novoarg[0]) + '_' + str(func)
                     # Aplicar a função de agregação á lista
-                    if func == 'sum':
+                    if func == 'soma':
                         d[novoarg] = sum(l)
                     elif func == 'max':
                         d[novoarg] = max(l)
@@ -106,7 +106,7 @@ def csvDataToDict(dados):
     return listaDeDic
 
 
-def writeToJson(dados, ficheiro):
+def escreveEmJSON(dados, ficheiro):
     '''
     Função que percorre a lista de dicionários e escreve um a um no ficheiro JSON de output
 
@@ -119,8 +119,8 @@ def writeToJson(dados, ficheiro):
 
         for d in dados:
             ficheiroJSON.write("\t{\n")
-
-            for i, par in enumerate(d.items()):
+            larg = list(d.items())
+            for par in larg:
 
                 if type(par[1]) == list:
                     ficheiroJSON.write("\t\t\"" + str(par[0]) + "\": [")
@@ -139,7 +139,7 @@ def writeToJson(dados, ficheiro):
                     ficheiroJSON.write(
                         "\t\t\"" + str(par[0]) + "\": \"" + str(par[1]) + "\"")
 
-                if i != len(d) - 1:
+                if par != larg[-1]:
                     ficheiroJSON.write(",\n")
                 else:
                     ficheiroJSON.write("\n")
@@ -163,9 +163,9 @@ def main():
     listaDeFicheiros.pop()
 
     for ficheiro in listaDeFicheiros:
-        dados = openCSV(ficheiro + ".csv")
-        dados = csvDataToDict(dados)
-        writeToJson(dados, ficheiro + ".json")
+        dados = abrirCSV(ficheiro + ".csv")
+        dados = dadosCSVparaDic(dados)
+        escreveEmJSON(dados, ficheiro + ".json")
 
     print("Ficheiros convertidos!")
 

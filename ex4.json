@@ -1,0 +1,23 @@
+[
+	{
+		"Número": "77",
+		"Genero": "M",
+		"Clube": "SCBraga",
+		"Idade": "23",
+		"Pontos_soma": 10
+	},
+	{
+		"Número": "83",
+		"Genero": "M",
+		"Clube": "SLBenfica",
+		"Idade": "19",
+		"Pontos_soma": 5
+	},
+	{
+		"Número": "9",
+		"Genero": "F",
+		"Clube": "Famalicão",
+		"Idade": "25",
+		"Pontos_soma": 6
+	}
+]
