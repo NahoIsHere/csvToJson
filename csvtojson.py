@@ -1,50 +1,67 @@
 import re
-
-##Expressões regulares usadas
-##Compile para facilitar o processo
-lineSplit = re.compile(r'\n')
-fileNameSplit = re.compile(r'.csv,?')
+'''
+Expressões regulares usadas
+Compilar antes facilita a legibilidade do código
+'''
+# ER para separar as linhas do ficheiro
+linhaSplit = re.compile(r'\n')
+# ER para separar o nome dos ficheiros
+nomeFicheiroSplit = re.compile(r'.csv,?')
+# ER para separar os argumentos do cabeçalho
 argSplit = re.compile(r'(?<=[A-Za-z]),|,(?=[A-Za-z])')
-valueSplit = re.compile(r',')
+# ER para separar os valores das colunas de uma linha
+valoresSplit = re.compile(r',')
+# ER para procurar uma função de compreensão
 funcSearch = re.compile(r'[A-Za-z]+\{([0-9]+),?([0-9]+)?\}:*([A-Za-z]+)?')
+# ER para remover o nome da função em compreensão
 funcArgSplit = re.compile(r'\{')
-stringListSearch = re.compile(r'[A-Za-z]')
+#ER para verificar se o valor é uma string ou um inteiro
+listaStringSearch = re.compile(r'[A-Za-z]')
 
-def openCSV(fileName):
 
-    with open(fileName,"r",encoding='utf-8') as csvFile:
-        data = csvFile.read()
-    
-    return data
+def openCSV(ficheiro):
+    '''
+    Lê um ficheiro CSV e guarda os seus dados num buffer
+    :param ficheiro: Nome do ficheiro
+    :return: Buffer com os dados do ficheiro
+    '''
 
-def csvDataToDict(data):
-    # Separar os dados por linhas
-    lines = re.split(lineSplit,data)
-    # Remover a ultima linha (Vazia)
-    lines.pop()
-    # Separar os argumentos da primeira linha
-    args = re.split(argSplit,lines.pop(0))
-    # Lista para guardar os dicionários com a informação de cada linha
-    listOfDict = []
-    # Percorrer as linhas uma a uma e transformar os dados em dicionarios
-    # Chave é o argumento e key o valor na linha 
-    for linha in lines:
+    with open(ficheiro, "r", encoding='utf-8') as ficheiroCSV:
+        dados = ficheiroCSV.read()
+
+    return dados
+
+
+def csvDataToDict(dados):
+    '''
+    Converte o cabeçalho do ficheiro numa lista de argumentos
+    Transforma cada linha num dicionário, onde a chave é o argumento e o valor a informação da coluna
+
+    :param dados: Buffer com os dados do ficheiro
+    :return: Resultado da conversão dos dados
+    '''
+
+    # Separar as linhas do ficheiro
+    linhas = re.split(linhaSplit, dados)
+    linhas.pop()
+
+    # Retirar os argumentos do cabeçalho
+    args = re.split(argSplit, linhas.pop(0))
+    listaDeDic = []
+
+    for linha in linhas:
         # Separar os valores da linha
-        linha = re.split(valueSplit,linha)
-        # Dicionário vazio para guardar a informação da linha
+        linha = re.split(valoresSplit, linha)
+
         d = {}
         # Percorrer os argumentos para dar zip com os valores
         for i in range(len(args)):
-            # Procurar se existe função de agregação ou lista
-            # Devidir os argumentos
-            if y := re.search(funcSearch,args[i]):
-                # Numero menor ou unico de colunas
+            # Procura se existe função de agregação ou lista
+            if y := re.search(funcSearch, args[i]):
                 N = y.group(1)
-                # Número maximo de colunas
                 M = y.group(2)
                 # Função de agregação a ser aplicado ou None se não existir função
                 func = y.group(3)
-                # Lista para agregar os valores
                 l = []
 
                 # Definir o número total de colunas
@@ -52,93 +69,106 @@ def csvDataToDict(data):
                     N = int(M) + i
                 elif N != None:
                     N = int(N) + i
-                
+
                 # Adicionar as colunas não vazias à lista
-                # Improve search string or int
-                for x in range(i,N):
-                    if re.search(stringListSearch,linha[0]):
+                for x in range(i, N):
+                    if re.search(listaStringSearch, linha[0]):
                         l.append(linha.pop(0))
-                    elif linha[0] != '': 
+                    elif linha[0] != '':
                         l.append(int(linha.pop(0)))
-                    else: 
+                    else:
                         linha.pop(0)
 
                 # Retirar o nome do campo com várias colunas
-                newarg = re.split(funcArgSplit,args[i])
+                novoarg = re.split(funcArgSplit, args[i])
 
                 if func != None:
                     # Preparar o argumento para ser adicionado ao dicionario Arg_func
-                    newarg = str(newarg[0]) + '_' + str(func)
-                    #Aplicar a função de agregação á lista
+                    novoarg = str(novoarg[0]) + '_' + str(func)
+                    # Aplicar a função de agregação á lista
                     if func == 'sum':
-                        d[newarg] = sum(l)
+                        d[novoarg] = sum(l)
                     elif func == 'max':
-                        d[newarg] = max(l)
+                        d[novoarg] = max(l)
                     elif func == 'min':
-                        d[newarg] = min(l)
+                        d[novoarg] = min(l)
                     elif func == 'media':
-                        d[newarg] = float(sum(l)/len(l))
+                        d[novoarg] = float(sum(l)/len(l))
                 else:
-                    # Preparar o argumento para ser adicionado ao dicionario Arg
-                    newarg = str(newarg[0])
-                    d[newarg] = l
+                    novoarg = str(novoarg[0])
+                    d[novoarg] = l
             elif ',' not in args[i]:
-                # Adicionar o argumento e valor ao dciionário {Arg:Valor}
+                # Adicionar o argumento e valor ao dicionário {Arg:Valor}
                 d[args[i]] = linha.pop(0)
         # Inserir o dicionário com as informações na lista
-        listOfDict.append(d)
-        
-    return listOfDict
+        listaDeDic.append(d)
 
-def writeToJson(data,file):
-    
-    with open(file, "w",encoding= 'utf-8') as jsonfile:
-        jsonfile.write('[\n')
-        
-        for d in data:
-            jsonfile.write("\t{\n")
+    return listaDeDic
 
-            for index,pair in enumerate(d.items()):
-          
-                if type(pair[1]) == list:
-                    jsonfile.write("\t\t\"" + str(pair[0]) + "\": [")
-                    for i,elem in enumerate(pair[1]):
+
+def writeToJson(dados, ficheiro):
+    '''
+    Função que percorre a lista de dicionários e escreve um a um no ficheiro JSON de output
+
+    :param dados: Lista de dicionários com a informação
+    :param ficheiro: Nome do ficheiro de output
+    '''
+
+    with open(ficheiro, "w", encoding='utf-8') as ficheiroJSON:
+        ficheiroJSON.write('[\n')
+
+        for d in dados:
+            ficheiroJSON.write("\t{\n")
+
+            for i, par in enumerate(d.items()):
+
+                if type(par[1]) == list:
+                    ficheiroJSON.write("\t\t\"" + str(par[0]) + "\": [")
+                    for i, elem in enumerate(par[1]):
                         if type(elem) == int:
-                            jsonfile.write(str(elem))
+                            ficheiroJSON.write(str(elem))
                         else:
-                            jsonfile.write('"'+elem+'"')
-                        if i != len(pair[1]) - 1:
-                            jsonfile.write(',')
-                    jsonfile.write("]")
-                elif type(pair[1]) == int:
-                    jsonfile.write("\t\t\"" + str(pair[0]) + "\": " + str(pair[1]))
+                            ficheiroJSON.write('"'+elem+'"')
+                        if i != len(par[1]) - 1:
+                            ficheiroJSON.write(',')
+                    ficheiroJSON.write("]")
+                elif type(par[1]) == int:
+                    ficheiroJSON.write(
+                        "\t\t\"" + str(par[0]) + "\": " + str(par[1]))
                 else:
-                    jsonfile.write("\t\t\"" + str(pair[0]) + "\": \"" + str(pair[1]) + "\"")
-                
-                if index != len(d) - 1:
-                    jsonfile.write(",\n")
-                else:
-                    jsonfile.write("\n")
-                
-            if d != data[-1]: 
-                jsonfile.write("\t},\n")
-            else: 
-                jsonfile.write("\t}\n]")
+                    ficheiroJSON.write(
+                        "\t\t\"" + str(par[0]) + "\": \"" + str(par[1]) + "\"")
 
-    jsonfile.close()
+                if i != len(d) - 1:
+                    ficheiroJSON.write(",\n")
+                else:
+                    ficheiroJSON.write("\n")
+
+            if d != dados[-1]:
+                ficheiroJSON.write("\t},\n")
+            else:
+                ficheiroJSON.write("\t}\n]")
+
+    ficheiroJSON.close()
+
 
 def main():
-    # Recebe o nome dos ficheiros CSV como input
-    listOfFiles = re.split(fileNameSplit,input())
-    # Remove o ultimo elemento que é vazio
-    listOfFiles.pop()
-    # Precorre a lista de ficheiros para os transformar em JSON
-    for fileName in listOfFiles:
-        data = openCSV(fileName + ".csv")
-        data = csvDataToDict(data)
-        writeToJson(data,fileName + ".json")
+    '''
+    É recebido uma lista de ficheiros CSV como input.
+    Os dados de cada ficheiro serão transformados numa lista de dicionários.
+    Por fim estes dados serão convertidos e escritos num ficheiro JSON como output.
+    '''
+
+    listaDeFicheiros = re.split(nomeFicheiroSplit, input())
+    listaDeFicheiros.pop()
+
+    for ficheiro in listaDeFicheiros:
+        dados = openCSV(ficheiro + ".csv")
+        dados = csvDataToDict(dados)
+        writeToJson(dados, ficheiro + ".json")
 
     print("Ficheiros convertidos!")
+
 
 if __name__ == "__main__":
     main()
