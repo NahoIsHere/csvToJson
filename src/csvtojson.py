@@ -15,7 +15,7 @@ valoresSplit = re.compile(r',')
 funcSearch = re.compile(r'[A-Za-z]+\{([0-9]+),?([0-9]+)?\}:*([A-Za-z]+)?')
 # ER para remover o nome da função em compreensão
 funcArgSplit = re.compile(r'\{')
-#ER para verificar se o valor é uma string ou um inteiro
+# ER para verificar se o valor é uma string ou um inteiro
 listaStringSearch = re.compile(r'[A-Za-z\-]')
 
 
@@ -165,7 +165,7 @@ def main():
     for ficheiro in listaDeFicheiros:
         dados = abrirCSV(ficheiro + ".csv")
         dados = dadosCSVparaDic(dados)
-        escreveEmJSON(dados, ficheiro + ".json")
+        escreveEmJSON(dados, "../outputs/" + ficheiro + ".json")
 
     print("Ficheiros convertidos!")
 
